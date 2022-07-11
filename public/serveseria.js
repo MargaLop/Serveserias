@@ -17,7 +17,7 @@ class breweryQuerier {
   }
 }
 
-new breweryQuerier({
+var coordenadasCervecerias = new breweryQuerier({
   guadalajara: {
     lat: 40.634595,
     lng: -3.16871,
@@ -31,3 +31,18 @@ new breweryQuerier({
     lng: 11.582,
   },
 });
+
+var ciudadesCoordenadas = Object.values(coordenadasCervecerias._locations)
+
+for (let localidad of ciudadesCoordenadas){
+  urlLocalidad = `${localidad.lat},${localidad.lng}`
+  fetch(`https://api.openbrewerydb.org/breweries?by_dist=${urlLocalidad}&per_page=1`)
+
+  .then(response => response.json())
+  .then(data =>{
+    const rate = document.getElementById("breweries");
+    dataParseada = Object.values(data)[0]
+    datosCerveceria = `nombre: ${dataParseada.name} - ciudad: ${dataParseada.city} - pais:${dataParseada.country} - calle:${dataParseada.street}`
+    rate.textContent  = datosCerveceria
+  });
+};
